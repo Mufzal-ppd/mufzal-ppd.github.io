@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);
-  const email = 'mufzalashraf@gmail.com';
+  const email = 'mufzal.ppd@gmail.com';
   const phone = '+91 8956780241';
   const linkedinUrl = 'https://www.linkedin.com/in/mufzal-shaikh-531706288';
 
