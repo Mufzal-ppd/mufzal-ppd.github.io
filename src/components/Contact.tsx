@@ -3,7 +3,6 @@ import { useState } from 'react';
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);
-  const [status, setStatus] = useState<"idle" | "success" | "error" | "sending">("idle");
 
   const email = 'mufzal.ppd@gmail.com';
   const phone = '+91 8956780241';
@@ -15,53 +14,128 @@ export default function Contact() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // ✅ NEW: Handle submit via Formspree
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus("sending");
-
     const formData = new FormData(e.currentTarget);
+    const name = formData.get('name');
+    const emailInput = formData.get('email');
+    const message = formData.get('message');
 
-    try {
-      const response = await fetch("https://formspree.io/f/mgvnyypb", {
-        method: "POST",
-        body: formData,
-        headers: { Accept: "application/json" },
-      });
+    const mailtoLink = `mailto:mufzalashraf@gmail.com?subject=Project Inquiry from ${name}&body=${encodeURIComponent(
+      `Name: ${name}\nEmail: ${emailInput}\n\nMessage:\n${message}`
+    )}`;
 
-      if (response.ok) {
-        setStatus("success");
-        e.currentTarget.reset(); // clear form
-      } else {
-        setStatus("error");
-      }
-    } catch (err) {
-      setStatus("error");
-    }
+    window.location.href = mailtoLink;
   };
 
   return (
-    <section id="contact" className="py-20 bg-gradient-to-br from-blue-50 via-white to-gray-50">
+    <section
+      id="contact"
+      className="py-20 bg-gradient-to-br from-blue-50 via-white to-gray-50"
+    >
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Let's Work Together
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Have a project in mind? Get in touch and let's discuss how I can help automate your workflows and build solutions that save time and cost.
+            Have a project in mind? Get in touch and let's discuss how I can
+            help automate your workflows and build solutions that save time and
+            cost.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          {/* Contact info (left side) remains same... */}
-
+          {/* Contact Information */}
           <div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">Send a Message</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">
+              Contact Information
+            </h3>
 
-            {/* ✅ Updated form with handleSubmit */}
+            <div className="space-y-6">
+              <div className="flex items-center gap-4">
+                <div className="bg-blue-100 text-blue-600 p-3 rounded-lg">
+                  <Mail size={24} />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900">Email</p>
+                  <a
+                    href={`mailto:${email}`}
+                    className="text-blue-600 hover:underline"
+                  >
+                    {email}
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <div className="bg-blue-100 text-blue-600 p-3 rounded-lg">
+                  <Phone size={24} />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900">Phone</p>
+                  <a
+                    href={`tel:${phone}`}
+                    className="text-blue-600 hover:underline"
+                  >
+                    {phone}
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <div className="bg-blue-100 text-blue-600 p-3 rounded-lg">
+                  <Linkedin size={24} />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900">LinkedIn</p>
+                  <a
+                    href={linkedinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    View Profile
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-8 bg-white rounded-xl p-6 border border-gray-200">
+              <h4 className="font-bold text-gray-900 mb-3">What You Get:</h4>
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500 mt-1">✓</span>
+                  Fast & reliable delivery
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500 mt-1">✓</span>
+                  Clear communication & updates
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500 mt-1">✓</span>
+                  Secure, scalable solutions
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500 mt-1">✓</span>
+                  Long-term support & training
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Contact Form */}
+          <div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">
+              Send a Message
+            </h3>
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
                   Name
                 </label>
                 <input
@@ -75,7 +149,10 @@ export default function Contact() {
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
                   Email
                 </label>
                 <input
@@ -89,7 +166,10 @@ export default function Contact() {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
                   Message / Project Brief
                 </label>
                 <textarea
@@ -105,11 +185,10 @@ export default function Contact() {
               <div className="flex flex-col sm:flex-row gap-3">
                 <button
                   type="submit"
-                  disabled={status === "sending"}
                   className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
                 >
                   <Send size={20} />
-                  {status === "sending" ? "Sending..." : "Send Message"}
+                  Send via Email
                 </button>
                 <button
                   type="button"
@@ -120,14 +199,6 @@ export default function Contact() {
                   {copied ? 'Copied!' : 'Copy Email'}
                 </button>
               </div>
-
-              {/* Status messages */}
-              {status === "success" && (
-                <p className="text-green-600 mt-2">✅ Message sent! I'll get back to you soon.</p>
-              )}
-              {status === "error" && (
-                <p className="text-red-600 mt-2">❌ Failed to send. Please try again.</p>
-              )}
             </form>
           </div>
         </div>
